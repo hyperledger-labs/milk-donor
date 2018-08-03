@@ -14,7 +14,7 @@ The scope of the lab is to develop a proof of concept (POC) for a blockchain-bas
 
 # Initial Committers
 
-Dr. Angela Courtney - [acourtney2015e](https://github.com/acourtney2015)
+Dr. Angela Courtney - [acourtney2015](https://github.com/acourtney2015)
 
 Marissa Iannarone - [MariLeigh](https://github.com/MariLeigh)
 
