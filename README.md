@@ -20,6 +20,6 @@ Marissa Iannarone - [MariLeigh](https://github.com/MariLeigh)
 
 # Sponsor
 
-Nate DiNiro: - Healthcare Working Group Chair
+Nate DiNiro - Healthcare Working Group Chair
 email: nate@youbase.io
 
