@@ -1,0 +1,25 @@
+//Commodity=Milk
+//Single transaction type=Trade
+//Trade modifies owner of the //milk
+//single participant type=Trader
+ /** 
+ *My milk trading network
+ */
+namespace org.example.mynetwork
+asset Milk identified by tradingBarCodeSymbol {
+    o String tradingBarCodeSymbol
+    o String description
+    o String mainExchange
+    o Double quantityOZ
+    --> Trader owner
+}
+
+participant Trader identified by tradeId {
+    o String tradeId
+    o String firstNameInputer
+    o String OrganizationName
+}
+transaction Trade {
+    --> Milk commodity
+    --> Trader newOwner
+}
