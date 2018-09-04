@@ -1,0 +1,220 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.donormilk
+
+/**
+ * Base model definitions for donors, particants and facilities
+ */
+
+enum results {
+  o AUTHORIZED
+  o RESTRICTED
+}
+
+enum status {
+  o ACTIVE
+  o INACTIVE
+}
+
+concept bloodTest {
+  o DateTime testDate
+  o DateTime validity
+  o results result
+  o String testRecordId
+  o String testCertifier
+  o String Data optional
+}
+
+asset donor identified by donorId {
+  o String donorId
+  o String data
+  o bloodTest latestTest
+  o bloodTest[] allTestResults
+}
+
+participant Actor identified by actorId {
+  o String actorId
+  o String[] facilities optional
+}
+
+participant Auditor extends Actor {
+  o String auditorName
+}
+
+participant MilkBank extends Actor {
+  o String milkBankName
+}
+
+participant Hospital extends Actor {
+  o String hospitalName
+}
+
+participant Laboratory extends Actor {
+  o String laboratoryName
+}
+
+asset Facility identified by facilityId {
+  o String facilityId
+  o String facilityName
+  --> Actor operator
+  o String[] auditRecord optional /* Under construction */
+  o String[] accreditations optional /* Under construction */
+  o status status /* Under construction active/inacive */
+  o String Country
+  o String State optional
+  o String City
+}
+
+asset MilkBankFacility extends Facility {
+}
+
+asset HospitalFacility extends Facility {
+}
+
+asset LaboratoryFacility extends Facility {
+}
+
+transaction openMilkBank {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newMilkBank {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction openHospital {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newHospital {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction openLaboratory {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newLaboratory {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction updateMilkBank {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+event updatedMilkBank {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+transaction updateHospital {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+event updatedHospital {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+transaction updateLaboratory {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+event updatedLaboratory {
+  o String facilityId
+  o String facilityName optional
+  o status status
+}
+
+/**
+ * Base model definitions for donations
+ */
+
+asset donation identified by donationId {
+  o String donationId
+  o String type /* Under construction: need hard constraining */
+  --> Facility collectionLocation
+  --> Facility currentLocation
+  --> donor originDonor
+  o Double amount
+  o DateTime collectionDate
+  o DateTime expiryDate
+
+}
+
+transaction collection {
+  o String donationId
+  o String type /* Under construction: need hard constraining */
+  --> Facility collectionLocation
+  --> donor originDonor
+  o Double amount
+  o DateTime collectionDate
+}
+
+event newCollection {
+  o String donationId
+  o String type /* Under construction: need hard constraining */
+  --> Facility collectionLocation
+  o Double amount
+  o DateTime collectionDate
+  o DateTime expiryDate
+}
+
+/** 
+* To-do:
+* donation transfer/event
+* lab testing
+* certifications
+* pooling transactions
+* pasteurization
+* barcoding/labelling?
+* refined assets transfer/event
+*/

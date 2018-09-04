@@ -18,6 +18,8 @@ Dr. Angela Courtney - [acourtney2015](https://github.com/acourtney2015)
 
 Marissa Iannarone - [MariLeigh](https://github.com/MariLeigh)
 
+Benjamin Djidi - [bdjidi](https://github.com/bdjidi)
+
 # Sponsor
 
 Nate DiNiro - Healthcare Working Group Chair
