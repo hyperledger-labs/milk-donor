@@ -27,7 +27,7 @@ enum results {
   o RESTRICTED
 }
 
-enum status {
+enum facilityStatus {
   o ACTIVE
   o INACTIVE
 }
@@ -75,7 +75,7 @@ asset Facility identified by facilityId {
   --> Actor operator
   o String[] auditRecord optional /* Under construction */
   o String[] accreditations optional /* Under construction */
-  o status status /* Under construction active/inacive */
+  o facilityStatus status /* Under construction active/inacive */
   o String Country
   o String State optional
   o String City
@@ -141,56 +141,65 @@ event newLaboratory {
 transaction updateMilkBank {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 event updatedMilkBank {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 transaction updateHospital {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 event updatedHospital {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 transaction updateLaboratory {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 event updatedLaboratory {
   o String facilityId
   o String facilityName optional
-  o status status
+  o facilityStatus status
 }
 
 /**
  * Base model definitions for donations
  */
 
+enum donationStatus {
+  o NEW
+  o IN_TRANSIT
+  o RECEIVED
+  o EXPIRED
+  o RECALLED
+}
+
 asset donation identified by donationId {
   o String donationId
   o String type /* Under construction: need hard constraining */
   --> Facility collectionLocation
   --> Facility currentLocation
+  --> Facility destinationLocation optional
   --> donor originDonor
   o Double amount
   o DateTime collectionDate
   o DateTime expiryDate
-
+  o donationStatus status
 }
 
-transaction collection {
+transaction newDonation {
   o String donationId
   o String type /* Under construction: need hard constraining */
   --> Facility collectionLocation
@@ -199,20 +208,73 @@ transaction collection {
   o DateTime collectionDate
 }
 
-event newCollection {
+event newDonationEvent {
   o String donationId
   o String type /* Under construction: need hard constraining */
   --> Facility collectionLocation
   o Double amount
   o DateTime collectionDate
   o DateTime expiryDate
+}
+
+transaction donationTransfer {
+  o String donationId
+  --> Facility destinationLocation
+}
+
+event donationTransferEvent {
+  o String donationId
+  --> Facility currentLocation
+  --> Facility destinationLocation
+}
+
+transaction donationReceived {
+  o String donationId
+  --> Facility currentLocation
+}
+
+event donationReceivedEvent {
+  o String donationId
+  --> Facility currentLocation
+}
+
+/**
+Certification Types
+*/
+
+asset certification identified by certificationId {
+  o String certificationId
+}
+
+transaction createCertification {
+
+}
+
+event createCertificationEvent {
+
+}
+
+transaction grantCertification {
+
+}
+
+event grantCertificationEvent {
+  
+}
+
+transaction revokeCertification {
+
+}
+
+event revokeCertificationEvent {
+  
 }
 
 /** 
 * To-do:
-* donation transfer/event
 * lab testing
 * certifications
+* RECALL transaction/events + recall type
 * pooling transactions
 * pasteurization
 * barcoding/labelling?
