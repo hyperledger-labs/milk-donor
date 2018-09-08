@@ -244,14 +244,23 @@ Certification Types
 
 asset certification identified by certificationId {
   o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
 }
 
 transaction createCertification {
-
+  o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
 }
 
 event createCertificationEvent {
-
+  o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
 }
 
 transaction grantCertification {
