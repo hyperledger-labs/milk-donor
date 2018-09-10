@@ -74,7 +74,7 @@ asset Facility identified by facilityId {
   o String facilityName
   --> Actor operator
   o String[] auditRecord optional /* Under construction */
-  o String[] accreditations optional /* Under construction */
+  o String[] certifications optional
   o facilityStatus status /* Under construction active/inacive */
   o String Country
   o String State optional
@@ -264,19 +264,31 @@ event createCertificationEvent {
 }
 
 transaction grantCertification {
-
+  o String certificationId
+  o String facilityId
 }
 
 event grantCertificationEvent {
-  
+  o String certificationId
+  o String facilityId
 }
 
 transaction revokeCertification {
-
+  o String certificationId
+  o String facilityId
 }
 
 event revokeCertificationEvent {
-  
+  o String certificationId
+  o String facilityId
+}
+
+/**
+Certification Types
+*/
+
+asset milkAsset identified by milkAssetId {
+  o String milkAssetId
 }
 
 /** 
