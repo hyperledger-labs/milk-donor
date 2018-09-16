@@ -175,71 +175,7 @@ event updatedLaboratory {
 }
 
 /**
- * Base model definitions for donations
- */
-
-enum donationStatus {
-  o NEW
-  o IN_TRANSIT
-  o RECEIVED
-  o EXPIRED
-  o RECALLED
-}
-
-asset donation identified by donationId {
-  o String donationId
-  o String type /* Under construction: need hard constraining */
-  --> Facility collectionLocation
-  --> Facility currentLocation
-  --> Facility destinationLocation optional
-  --> donor originDonor
-  o Double amount
-  o DateTime collectionDate
-  o DateTime expiryDate
-  o donationStatus status
-}
-
-transaction newDonation {
-  o String donationId
-  o String type /* Under construction: need hard constraining */
-  --> Facility collectionLocation
-  --> donor originDonor
-  o Double amount
-  o DateTime collectionDate
-}
-
-event newDonationEvent {
-  o String donationId
-  o String type /* Under construction: need hard constraining */
-  --> Facility collectionLocation
-  o Double amount
-  o DateTime collectionDate
-  o DateTime expiryDate
-}
-
-transaction donationTransfer {
-  o String donationId
-  --> Facility destinationLocation
-}
-
-event donationTransferEvent {
-  o String donationId
-  --> Facility currentLocation
-  --> Facility destinationLocation
-}
-
-transaction donationReceived {
-  o String donationId
-  --> Facility currentLocation
-}
-
-event donationReceivedEvent {
-  o String donationId
-  --> Facility currentLocation
-}
-
-/**
-Certification Types
+Certification Definititons
 */
 
 asset certification identified by certificationId {
@@ -284,20 +220,120 @@ event revokeCertificationEvent {
 }
 
 /**
-Certification Types
+Milk Asset Constructs
 */
+
+enum assetStatus {
+  o NEW
+  o IN_TRANSIT
+  o RECEIVED
+  o EXPIRED
+  o RECALLED
+}
 
 asset milkAsset identified by milkAssetId {
   o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility originLocation
+  --> Facility currentLocation
+  --> Facility destinationLocation optional
+  o Double originAmount
+  o Double currentAmount
+  o DateTime poolingDate
+  o DateTime expiryDate
+  o assetStatus status
+  o Boolean isRaw
+  o Boolean isComposit
+  o String[] sourceAssetIds
+  o String[] operationsIds
+  o donor[] donorIds
+}
+
+transaction newRawAsset {
+  o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility originLocation
+  --> donor originDonor
+  o Double amount
+  o DateTime collectionDate
+}
+
+event newRawAssetEvent {
+  o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility collectionLocation
+  o Double amount
+  o DateTime collectionDate
+  o DateTime expiryDate
+}
+
+transaction assetTransfer {
+  o String milkAssetId
+  --> Facility destinationLocation
+}
+
+event assetTransferEvent {
+  o String milkAssetId
+  --> Facility currentLocation
+  --> Facility destinationLocation
+}
+
+transaction assetReceived {
+  o String milkAssetId
+  --> Facility currentLocation
+}
+
+event assetReceivedEvent {
+  o String milkAssetId
+  --> Facility currentLocation
+}
+
+transaction milkPooling {
+  o String milkAssetId
+  o String[] milkAssetIds
+}
+
+event milkPoolingEvent {
+  o String milkAssetId
+  o String[] milkAssetIds
+}
+
+enum operationOption {
+  o PASTEURIZATION
+  o LAB_TESTING
+  o BARCODING
+  o PACKING
+}
+
+concept operation {
+  o operationOption type
+  o DateTime operationStartTime
+  o DateTime operationEndTime
+  --> Actor operator
+  o String details optional
 }
 
 /** 
 * To-do:
-* lab testing
-* certifications
 * RECALL transaction/events + recall type
-* pooling transactions
-* pasteurization
-* barcoding/labelling?
-* refined assets transfer/event
+* Milk loss/destroy functions
 */
+
+enum defectType {
+
+}
+
+transaction signalDefect {
+
+}
+
+event signalDefectEvent {
+
+}
+
+/** 
+* Demo Specific transactions
+*/
+
+transaction setupDemo {
+}
