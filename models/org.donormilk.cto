@@ -303,6 +303,8 @@ enum operationOption {
   o LAB_TESTING
   o BARCODING
   o PACKING
+  o FROSTING
+  o DEFROSTING
 }
 
 concept operation {
