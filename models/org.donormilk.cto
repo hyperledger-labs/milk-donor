@@ -229,6 +229,7 @@ enum assetStatus {
   o RECEIVED
   o EXPIRED
   o RECALLED
+  o HOLD
 }
 
 asset milkAsset identified by milkAssetId {
@@ -239,13 +240,14 @@ asset milkAsset identified by milkAssetId {
   --> Facility destinationLocation optional
   o Double originAmount
   o Double currentAmount
-  o DateTime poolingDate
+  o DateTime poolingDate optional
   o DateTime expiryDate
   o assetStatus status
   o Boolean isRaw
   o Boolean isComposit
   o String[] sourceAssetIds
-  o String[] operationsIds
+  o String[] destinationAssetIds optional
+  o String[] operationsIds optional
   o donor[] donorIds
 }
 
