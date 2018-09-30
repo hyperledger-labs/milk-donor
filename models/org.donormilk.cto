@@ -1,0 +1,343 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.donormilk
+
+/**
+ * Base model definitions for donors, particants and facilities
+ */
+
+enum results {
+  o AUTHORIZED
+  o RESTRICTED
+}
+
+enum facilityStatus {
+  o ACTIVE
+  o INACTIVE
+}
+
+concept bloodTest {
+  o DateTime testDate
+  o DateTime validity
+  o results result
+  o String testRecordId
+  o String testCertifier
+  o String Data optional
+}
+
+asset donor identified by donorId {
+  o String donorId
+  o String data
+  o bloodTest latestTest
+  o bloodTest[] allTestResults
+}
+
+participant Actor identified by actorId {
+  o String actorId
+  o String[] facilities optional
+}
+
+participant Auditor extends Actor {
+  o String auditorName
+}
+
+participant MilkBank extends Actor {
+  o String milkBankName
+}
+
+participant Hospital extends Actor {
+  o String hospitalName
+}
+
+participant Laboratory extends Actor {
+  o String laboratoryName
+}
+
+asset Facility identified by facilityId {
+  o String facilityId
+  o String facilityName
+  --> Actor operator
+  o String[] auditRecord optional /* Under construction */
+  o String[] certifications optional
+  o facilityStatus status /* Under construction active/inacive */
+  o String Country
+  o String State optional
+  o String City
+}
+
+asset MilkBankFacility extends Facility {
+}
+
+asset HospitalFacility extends Facility {
+}
+
+asset LaboratoryFacility extends Facility {
+}
+
+transaction openMilkBank {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newMilkBank {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction openHospital {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newHospital {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction openLaboratory {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+event newLaboratory {
+  o String facilityId
+  o String facilityName
+  o String Country
+  o String State optional
+  o String City
+}
+
+transaction updateMilkBank {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+event updatedMilkBank {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+transaction updateHospital {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+event updatedHospital {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+transaction updateLaboratory {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+event updatedLaboratory {
+  o String facilityId
+  o String facilityName optional
+  o facilityStatus status
+}
+
+/**
+Certification Definititons
+*/
+
+asset certification identified by certificationId {
+  o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
+}
+
+transaction createCertification {
+  o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
+}
+
+event createCertificationEvent {
+  o String certificationId
+  o String certificationName
+  o DateTime expiryDate optional
+  --> Auditor certifyingAuthority
+}
+
+transaction grantCertification {
+  o String certificationId
+  o String facilityId
+}
+
+event grantCertificationEvent {
+  o String certificationId
+  o String facilityId
+}
+
+transaction revokeCertification {
+  o String certificationId
+  o String facilityId
+}
+
+event revokeCertificationEvent {
+  o String certificationId
+  o String facilityId
+}
+
+/**
+Milk Asset Constructs
+*/
+
+enum assetStatus {
+  o NEW
+  o IN_TRANSIT
+  o RECEIVED
+  o EXPIRED
+  o RECALLED
+  o HOLD
+}
+
+asset milkAsset identified by milkAssetId {
+  o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility originLocation
+  --> Facility currentLocation
+  --> Facility destinationLocation optional
+  o Double originAmount
+  o Double currentAmount
+  o DateTime poolingDate optional
+  o DateTime expiryDate
+  o assetStatus status
+  o Boolean isRaw
+  o Boolean isComposit
+  o String[] sourceAssetIds
+  o String[] destinationAssetIds optional
+  o String[] operationsIds optional
+  o donor[] donorIds
+}
+
+transaction newRawAsset {
+  o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility originLocation
+  --> donor originDonor
+  o Double amount
+  o DateTime collectionDate
+}
+
+event newRawAssetEvent {
+  o String milkAssetId
+  o String type /* Under construction: need hard constraining */
+  --> Facility collectionLocation
+  o Double amount
+  o DateTime collectionDate
+  o DateTime expiryDate
+}
+
+transaction assetTransfer {
+  o String milkAssetId
+  --> Facility destinationLocation
+}
+
+event assetTransferEvent {
+  o String milkAssetId
+  --> Facility currentLocation
+  --> Facility destinationLocation
+}
+
+transaction assetReceived {
+  o String milkAssetId
+  --> Facility currentLocation
+}
+
+event assetReceivedEvent {
+  o String milkAssetId
+  --> Facility currentLocation
+}
+
+transaction milkPooling {
+  o String milkAssetId
+  o String[] milkAssetIds
+}
+
+event milkPoolingEvent {
+  o String milkAssetId
+  o String[] milkAssetIds
+}
+
+enum operationOption {
+  o PASTEURIZATION
+  o LAB_TESTING
+  o BARCODING
+  o PACKING
+  o FROSTING
+  o DEFROSTING
+}
+
+concept operation {
+  o operationOption type
+  o DateTime operationStartTime
+  o DateTime operationEndTime
+  --> Actor operator
+  o String details optional
+}
+
+/** 
+* To-do:
+* RECALL transaction/events + recall type
+* Milk loss/destroy functions
+*/
+
+enum defectType {
+
+}
+
+transaction signalDefect {
+
+}
+
+event signalDefectEvent {
+
+}
+
+/** 
+* Demo Specific transactions
+*/
+
+transaction setupDemo {
+}
