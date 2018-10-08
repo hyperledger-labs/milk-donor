@@ -293,6 +293,7 @@ event assetReceivedEvent {
 transaction milkPooling {
   o String milkAssetId
   o String[] milkAssetIds
+  o Double[] amounts
 }
 
 event milkPoolingEvent {
@@ -321,6 +322,7 @@ concept operation {
 * To-do:
 * RECALL transaction/events + recall type
 * Milk loss/destroy functions
+* Link operations to asset
 */
 
 enum defectType {
