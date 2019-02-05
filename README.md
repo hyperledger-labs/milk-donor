@@ -6,7 +6,7 @@ This lab hold the code base for a blockchain build focused on solving market pro
 
 There is currently a major donor milk shortage. This has particular impact in the Neonatal Intensive Care Unit (NICU) where formula can have fatal impact on premature baby's intestines, leaving human milk to be the only viable option. At a global scale donor milk fraud, lack of traceability, and availability are known issues. While there are smaller entities engaging in the space, there is no large-scale breast milk providers and there is opportunity to expand participation from donors and accessibility for babies in need.
 
-Business case for this use case can be found here: https://wiki.hyperledger.org/groups/healthcare/donor_milk_transparency_and_traceability
+Business case for this use case can be found here: https://wiki-archive.hyperledger.org/groups/healthcare/donor_milk_transparency_and_traceability
 
 # Scope of Lab
 
